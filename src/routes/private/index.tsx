@@ -1,5 +1,5 @@
 import { STORAGE } from '@/constant/keyStoage';
-import { LocalStore, SessionStore } from '@/helpers/local';
+import { SessionStore } from '@/helpers/local';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 

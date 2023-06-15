@@ -2,20 +2,32 @@ import { STORAGE } from '@/constant/keyStoage';
 import { SessionStore } from '@/helpers/local';
 
 const ws: any = new WebSocket(
-  `${import.meta.env.VITE_APP_WS}://192.168.100.57:7772`
+  `${import.meta.env.VITE_APP_WS}://192.168.131.73:7772`
 );
 
-const sendMessageWS = (message: string | number) => {
+const sendMessageWS = (message: object) => {
   const customeMessage = {
     email: SessionStore.get(STORAGE.INFOR_WALLET).email,
     address: SessionStore.get(STORAGE.INFOR_WALLET).address,
-    message,
+    message: new Uint8Array(),
   };
+  // return ws.send(JSON.stringify(customeMessage));
+  const mess = JSON.stringify(message);
+  // console.log(mess);
+  var arr_mess = new Uint8Array(3 + mess.length);
+  arr_mess[0] = 0xda;
+  arr_mess[1] = Math.trunc(mess.length / 256);
+  arr_mess[2] = Math.trunc(mess.length % 256);
+  // console.log(arr_mess);
+  const encoder = new TextEncoder();
+  const arrayBufferMess = encoder.encode(mess);
+  // console.log(arrayBufferMess);
+  let buffer = new Uint8Array(3 + arrayBufferMess.length);
+  buffer.set(arr_mess, 0);
+  buffer.set(arrayBufferMess, 3);
+  customeMessage.message = buffer;
+  console.log(buffer);
   return ws.send(JSON.stringify(customeMessage));
-
-  // const encoder = new TextEncoder();
-  // const arrayBuffer = encoder.encode(JSON.stringify(customeMessage)).buffer;
-  // return ws.send(arrayBuffer);
 };
 
 export { ws, sendMessageWS };

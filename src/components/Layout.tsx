@@ -10,7 +10,6 @@ interface ILayoutProps {
 const Layout: FC<ILayoutProps> = ({ children, innerRef }) => {
   return (
     <LayoutStyled ref={innerRef}>
-      <div>Layout</div>
       <div>
         <Navbar />
       </div>

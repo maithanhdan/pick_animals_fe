@@ -5,7 +5,7 @@ import { AppContext } from '@/contexts/AppContext';
 import { SessionStore } from '@/helpers/local';
 import { UPEvent, UPEventType } from '@unipasswallet/popup-types';
 
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 type LoginProps = { title?: string };
@@ -67,7 +67,7 @@ const Login: FC<LoginProps> = () => {
     <div>
       <div>{t('login.title')}</div>
       <SelectLanguage />
-      <button onClick={loginGoogle}>login by google</button>
+      <button onClick={loginGoogle}>{t('login.clickToLogin')}</button>
       {/* <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} /> */}
     </div>
   );

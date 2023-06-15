@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 const Navbar: FC = () => {
   return (
     <nav>
-      <ul>
+      <ul style={{ display: 'flex', gap: 20 }}>
         <li>
           <Link to='/'>Home</Link>
         </li>
