@@ -1,14 +1,15 @@
 import Navbar from '@/components/Navbar';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, Ref } from 'react';
 import styled from 'styled-components';
 
 const LayoutStyled = styled.div``;
 interface ILayoutProps {
   children: ReactNode;
+  innerRef?: Ref<HTMLDivElement>;
 }
-const Layout: FC<ILayoutProps> = ({ children }) => {
+const Layout: FC<ILayoutProps> = ({ children, innerRef }) => {
   return (
-    <LayoutStyled>
+    <LayoutStyled ref={innerRef}>
       <div>Layout</div>
       <div>
         <Navbar />

@@ -7,6 +7,10 @@ const resetCss = css`
     box-sizing: border-box;
     font-family: 'Noto Sans JP', sans-serif;
     /* overflow: hidden; */
+
+    video::-webkit-media-controls-timeline {
+      /* display: none; */
+    }
   }
   input {
     position: relative;

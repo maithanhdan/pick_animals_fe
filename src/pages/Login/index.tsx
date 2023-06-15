@@ -1,5 +1,5 @@
 import { SelectLanguage, Toast } from '@/components';
-import LiveStreamPlayerWertc from '@/components/LiveStreamPlayerWertc';
+// import LiveStreamPlayerFLV from '@/components/LiveStreamPlayerFLV';
 import { upWallet } from '@/constant/wallet';
 import { AppContext } from '@/contexts/AppContext';
 import { SessionStore } from '@/helpers/local';
@@ -9,22 +9,10 @@ import React, { FC, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 type LoginProps = { title?: string };
-type DataSubmit = { email: string; password: string };
 const Login: FC<LoginProps> = () => {
   const { t, i18n } = useTranslation();
-  // const dispath = useDispatch();
   const navigate = useNavigate();
   const { setLoadingCustom } = useContext(AppContext);
-  // const { handleSubmit, register } = useForm<DataSubmit>({
-  //   mode: 'all',
-  // });∆
-  // const onLoginSuccess = async () => {
-  //   await navigate('/');
-  // };
-  // const onSubmit: SubmitHandler<DataSubmit> = (data) => {
-  //   const payload = { data, onSuccess: onLoginSuccess };
-  //   dispath(login(payload));
-  // };∆
 
   const loginGoogle = async () => {
     setLoadingCustom(true);
@@ -49,6 +37,7 @@ const Login: FC<LoginProps> = () => {
           Toast({ type: 'error', message: 'server error!!' });
           SessionStore.clear();
           setLoadingCustom(false);
+          clearTimeout(a);
         }, 5000);
         ws.onopen = () => {
           navigate('/');
@@ -79,9 +68,7 @@ const Login: FC<LoginProps> = () => {
       <div>{t('login.title')}</div>
       <SelectLanguage />
       <button onClick={loginGoogle}>login by google</button>
-      {/* <LiveStreamPlayerFLV />
-      <LiveStreamPlayerM3U8 /> */}
-      {/* <LiveStreamPlayerWertc /> */}
+      {/* <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} /> */}
     </div>
   );
 };
