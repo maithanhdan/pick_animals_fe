@@ -1,8 +1,8 @@
 import { sendMessageWS } from '@/helpers/socket';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { styled } from 'styled-components';
 
-type RoomControlProps = {};
+type RoomControlProps = { startGame: boolean };
 type ButtonType = {
   name: string;
   type: number;
@@ -38,12 +38,10 @@ const ButtonStartGame = styled.button`
     border: none;
   }
 `;
-const RoomControl: FC<RoomControlProps> = () => {
-  const [start, setStart] = useState(false);
-
+const RoomControl: FC<RoomControlProps> = ({ startGame }) => {
   useEffect(() => {
     //handle action from client
-    if (start) {
+    if (startGame) {
       function handleKeyDown(e: any) {
         console.log(e.keyCode);
         switch (e.keyCode) {
@@ -77,7 +75,7 @@ const RoomControl: FC<RoomControlProps> = () => {
 
   useEffect(() => {
     //handle action from client
-    if (start) {
+    if (startGame) {
       function handleKeyup(e: any) {
         console.log('up');
         sendMessageWS({ cmd: 'operation', type: 5 });
@@ -110,28 +108,29 @@ const RoomControl: FC<RoomControlProps> = () => {
     <div style={{ marginTop: 20 }}>
       <ButtonStartGame
         onClick={() => {
-          setStart(true);
           sendMessageWS({ cmd: 'start_game' });
         }}
-        disabled={start}
+        disabled={startGame}
       >
         Start game
       </ButtonStartGame>
-      <GroupButtonControlStyled>
-        <GroupButtonArrowStyled>
-          <div style={{ textAlign: 'center' }}>
-            <ButtonClick name='Up' type={1} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <ButtonClick name='Left' type={2} />
-            <ButtonClick name='Right' type={3} />
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <ButtonClick name='Down' type={0} />
-          </div>
-        </GroupButtonArrowStyled>
-        <ButtonClick name='Grasp' type={4} />
-      </GroupButtonControlStyled>
+      {startGame && (
+        <GroupButtonControlStyled>
+          <GroupButtonArrowStyled>
+            <div style={{ textAlign: 'center' }}>
+              <ButtonClick name='Up' type={1} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <ButtonClick name='Left' type={2} />
+              <ButtonClick name='Right' type={3} />
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <ButtonClick name='Down' type={0} />
+            </div>
+          </GroupButtonArrowStyled>
+          <ButtonClick name='Grasp' type={4} />
+        </GroupButtonControlStyled>
+      )}
     </div>
   );
 };

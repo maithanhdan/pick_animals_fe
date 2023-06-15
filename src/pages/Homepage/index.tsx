@@ -18,7 +18,7 @@ const Homepage: FC<HomepageProps> = () => {
   const refAction = useRef<HTMLInputElement>(null);
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState('');
-
+  const [startGame, setStartGame] = useState<boolean>(false);
   const handlLogout = () => {
     ws.close();
     const onSuccess = () => {
@@ -67,6 +67,14 @@ const Homepage: FC<HomepageProps> = () => {
         Toast({ type: 'success', message: 'reply_roomlist' });
         setRooms(cmd.rooms);
         break;
+      case 'game_ret':
+        Toast({ type: 'success', message: 'end game' });
+        cmd.res === 0 && setStartGame(false);
+        break;
+      case 'start_game':
+        Toast({ type: 'success', message: 'start game' });
+        cmd.res === 1 && setStartGame(true);
+        break;
       default:
         Toast({ type: 'success', message: cmd });
         break;
@@ -93,7 +101,7 @@ const Homepage: FC<HomepageProps> = () => {
         </button>
         <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} />
         {selectedRoom !== '' ? (
-          <RoomControl />
+          <RoomControl startGame={startGame} />
         ) : (
           <div style={{ marginTop: 20 }}>
             {rooms.map((value: string, index) => {
