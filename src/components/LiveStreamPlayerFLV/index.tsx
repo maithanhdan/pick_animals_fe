@@ -6,6 +6,7 @@ interface ILiveStreamPlayerFLVProps {
 const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   let flvPlayer: flvjs.Player | null = null;
+  flvjs.isSupported();
 
   const initializePlayer = () => {
     flvPlayer = flvjs.createPlayer(
@@ -13,8 +14,14 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
         type: 'flv',
         url: link,
         isLive: true,
+        hasVideo: true,
       },
-      { seekType: 'range', rangeLoadZeroStart: true }
+      {
+        seekType: 'range',
+        rangeLoadZeroStart: true,
+        // enableStashBuffer: false,
+        // autoCleanupSourceBuffer: true,
+      }
     );
 
     if (videoRef.current && flvPlayer) {
@@ -25,6 +32,14 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
   };
   useEffect(() => {
     initializePlayer();
+    return () => {
+      if (flvPlayer) {
+        flvPlayer.unload();
+        flvPlayer.detachMediaElement();
+        flvPlayer.destroy();
+        flvPlayer = null;
+      }
+    };
   }, []);
 
   return (
@@ -34,8 +49,9 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
         controls
         autoPlay
         width={'100%'}
-        height={'auto'}
+        height={'100%'}
         muted={false}
+        style={{ backgroundColor: 'black' }}
       />
     </div>
   );

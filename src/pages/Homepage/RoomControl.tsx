@@ -1,3 +1,4 @@
+import { MOVE_DIRECTION } from '@/constant/NumberControlMechine';
 import { sendMessageWS } from '@/helpers/socket';
 import React, { FC, useEffect } from 'react';
 import { styled } from 'styled-components';
@@ -46,19 +47,19 @@ const RoomControl: FC<RoomControlProps> = ({ startGame }) => {
         console.log(e.keyCode);
         switch (e.keyCode) {
           case 32:
-            sendMessageWS({ cmd: 'operation', type: 4 });
+            sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.GRASP });
             break;
           case 37:
-            sendMessageWS({ cmd: 'operation', type: 2 });
+            sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.LEFT });
             break;
           case 38:
-            sendMessageWS({ cmd: 'operation', type: 1 });
+            sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.UP });
             break;
           case 39:
-            sendMessageWS({ cmd: 'operation', type: 3 });
+            sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.RIGHT });
             break;
           case 40:
-            sendMessageWS({ cmd: 'operation', type: 0 });
+            sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.DOWN });
             break;
           default:
             break;
@@ -78,7 +79,7 @@ const RoomControl: FC<RoomControlProps> = ({ startGame }) => {
     if (startGame) {
       function handleKeyup(e: any) {
         console.log('up');
-        sendMessageWS({ cmd: 'operation', type: 5 });
+        sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.STOP });
       }
       document.addEventListener('keyup', handleKeyup);
 
@@ -97,7 +98,7 @@ const RoomControl: FC<RoomControlProps> = ({ startGame }) => {
       }}
       onMouseUp={() => {
         console.log('mouse up');
-        sendMessageWS({ cmd: 'operation', type: 0 });
+        sendMessageWS({ cmd: 'operation', type: MOVE_DIRECTION.STOP });
       }}
     >
       {name}
@@ -118,17 +119,17 @@ const RoomControl: FC<RoomControlProps> = ({ startGame }) => {
         <GroupButtonControlStyled>
           <GroupButtonArrowStyled>
             <div style={{ textAlign: 'center' }}>
-              <ButtonClick name='Up' type={1} />
+              <ButtonClick name='Up' type={MOVE_DIRECTION.UP} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ButtonClick name='Left' type={2} />
-              <ButtonClick name='Right' type={3} />
+              <ButtonClick name='Left' type={MOVE_DIRECTION.LEFT} />
+              <ButtonClick name='Right' type={MOVE_DIRECTION.RIGHT} />
             </div>
             <div style={{ textAlign: 'center' }}>
-              <ButtonClick name='Down' type={0} />
+              <ButtonClick name='Down' type={MOVE_DIRECTION.DOWN} />
             </div>
           </GroupButtonArrowStyled>
-          <ButtonClick name='Grasp' type={4} />
+          <ButtonClick name='Grasp' type={MOVE_DIRECTION.GRASP} />
         </GroupButtonControlStyled>
       )}
     </div>

@@ -69,11 +69,11 @@ const Homepage: FC<HomepageProps> = () => {
         break;
       case 'game_ret':
         Toast({ type: 'success', message: 'end game' });
-        cmd.res === 0 && setStartGame(false);
+        cmd.ret === 0 && setStartGame(false);
         break;
       case 'start_game':
         Toast({ type: 'success', message: 'start game' });
-        cmd.res === 1 && setStartGame(true);
+        cmd.ret === 1 && setStartGame(true);
         break;
       default:
         Toast({ type: 'success', message: cmd });

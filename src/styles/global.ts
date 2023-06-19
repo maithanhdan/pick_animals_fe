@@ -7,8 +7,25 @@ const resetCss = css`
     box-sizing: border-box;
     font-family: 'Noto Sans JP', sans-serif;
     /* overflow: hidden; */
-
+    video::-webkit-media-controls-enclosure {
+      /* display: none; */
+    }
     video::-webkit-media-controls-timeline {
+      /* display: none; */
+    }
+    video::-webkit-media-controls-current-time-display {
+      /* display: none; */
+    }
+    video::-webkit-media-controls-mute-button {
+      /* display: none; */
+    }
+    video::-webkit-media-controls-toggle-closed-captions-button {
+      /* display: none; */
+    }
+    video::-webkit-media-controls-volume-slider {
+      /* display: none; */
+    }
+    video::-webkit-media-controls-play-button {
       /* display: none; */
     }
   }
