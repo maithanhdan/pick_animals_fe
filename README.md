@@ -6,6 +6,7 @@ VITE_APP_TYPE='prod'
 VITE_APP_WS = 'ws'
 VITE_APP_PORT = '5173'
 VITE_APP_LINK_LIVESTREAM = 'http://localhost:8000/live/output.flv'
+VITE_APP_WS_IPCONFIG = 'ws://192.168.131.73:7772'
 
 [node]
 version: v16.17.1

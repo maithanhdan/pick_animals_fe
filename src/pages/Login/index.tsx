@@ -1,5 +1,5 @@
 import { SelectLanguage, Toast } from '@/components';
-// import LiveStreamPlayerFLV from '@/components/LiveStreamPlayerFLV';
+import LiveStreamPlayerFLV from '@/components/LiveStreamPlayerFLV';
 import { upWallet } from '@/constant/wallet';
 import { AppContext } from '@/contexts/AppContext';
 import { SessionStore } from '@/helpers/local';
@@ -31,7 +31,7 @@ const Login: FC<LoginProps> = () => {
       });
       if (account) {
         const ws: any = new WebSocket(
-          `${import.meta.env.VITE_APP_WS}://192.168.100.57:7772`
+          `${import.meta.env.VITE_APP_WS_IPCONFIG}`
         );
         const a = setTimeout(() => {
           Toast({ type: 'error', message: 'server error!!' });
@@ -68,7 +68,7 @@ const Login: FC<LoginProps> = () => {
       <div>{t('login.title')}</div>
       <SelectLanguage />
       <button onClick={loginGoogle}>{t('login.clickToLogin')}</button>
-      {/* <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} /> */}
+      <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} />
     </div>
   );
 };
