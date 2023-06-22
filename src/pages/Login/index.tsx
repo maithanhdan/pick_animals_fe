@@ -68,7 +68,7 @@ const Login: FC<LoginProps> = () => {
       <div>{t('login.title')}</div>
       <SelectLanguage />
       <button onClick={loginGoogle}>{t('login.clickToLogin')}</button>
-      <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} />
+      {/* <LiveStreamPlayerFLV link={import.meta.env.VITE_APP_LINK_LIVESTREAM} /> */}
     </div>
   );
 };
