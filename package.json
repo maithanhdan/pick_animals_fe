@@ -8,7 +8,6 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@flashphoner/websdk": "^2.0.212",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/styled-components": "^5.1.26",
     "@types/video-react": "^0.15.1",

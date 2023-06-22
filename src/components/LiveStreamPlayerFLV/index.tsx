@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import flvjs from 'flv.js';
 interface ILiveStreamPlayerFLVProps {
   link: string;
@@ -6,9 +6,9 @@ interface ILiveStreamPlayerFLVProps {
 const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   let flvPlayer: flvjs.Player | null = null;
-  flvjs.isSupported();
+  flvjs.isSupported()
 
-  const initializePlayer = () => {
+  const initializePlayer = useCallback(() => {
     flvPlayer = flvjs.createPlayer(
       {
         type: 'flv',
@@ -19,8 +19,10 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
       {
         seekType: 'range',
         rangeLoadZeroStart: true,
-        // enableStashBuffer: false,
-        // autoCleanupSourceBuffer: true,
+        enableStashBuffer: false,
+        autoCleanupSourceBuffer: true,
+        lazyLoad: false,
+        lazyLoadMaxDuration: 99999
       }
     );
 
@@ -28,10 +30,17 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
       flvPlayer.attachMediaElement(videoRef.current);
       flvPlayer.load();
       flvPlayer.play();
+      setInterval(function () {
+        if (!flvPlayer?.buffered.length) {
+          return;
+        }
+        var end = flvPlayer.buffered.end(0);
+        var diff = end - flvPlayer.currentTime;
+        if (diff >= 0.4) {
+          flvPlayer.currentTime = end - 0.1;
+        }
+      }, 300)
     }
-  };
-  useEffect(() => {
-    initializePlayer();
     return () => {
       if (flvPlayer) {
         flvPlayer.unload();
@@ -40,7 +49,11 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
         flvPlayer = null;
       }
     };
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    initializePlayer()
+  }, [initializePlayer]);
 
   return (
     <div style={{ width: 500, height: 500 }}>
@@ -58,75 +71,3 @@ const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
 };
 
 export default LiveStreamPlayerFLV;
-
-// import React, { FC, useEffect, useRef } from 'react';
-// import flvjs from 'flv.js';
-
-// interface ILiveStreamPlayerFLVProps {
-//   link: string;
-// }
-
-// const LiveStreamPlayerFLV: FC<ILiveStreamPlayerFLVProps> = ({ link }) => {
-//   const videoRef = useRef<HTMLVideoElement>(null);
-
-//   let flvPlayer: flvjs.Player | null = null;
-//   useEffect(() => {
-//     const initializePlayer = () => {
-//       flvPlayer = flvjs.createPlayer({
-//         type: 'flv',
-//         url: link,
-//       });
-
-//       if (videoRef.current && flvPlayer) {
-//         flvPlayer.attachMediaElement(videoRef.current);
-//         flvPlayer.load();
-//       }
-//     };
-
-//     initializePlayer();
-
-//     return () => {
-//       if (flvPlayer) {
-//         flvPlayer.unload();
-//         flvPlayer.detachMediaElement();
-//         flvPlayer.destroy();
-//       }
-//     };
-//   }, []);
-
-//   useEffect(() => {
-//     if (videoRef.current) {
-//       const videoElement = videoRef.current;
-//       const url = link;
-//       const range = 'bytes=0-9999'; // Specify the desired range of bytes
-
-//       if (flvjs.isSupported()) {
-//         const mediaDataSource = {
-//           type: 'flv',
-//           url: `${url}?${range}`, // Append the range to the URL
-//         };
-//         flvPlayer = flvjs.createPlayer(mediaDataSource, {
-//           enableStashBuffer: false, // Disable buffer for seeking
-//         });
-
-//         flvPlayer.attachMediaElement(videoElement);
-//         flvPlayer.load();
-//       }
-//     }
-
-//     return () => {
-//       if (flvPlayer) {
-//         flvPlayer.destroy();
-//         flvPlayer = null;
-//       }
-//     };
-//   }, [link]);
-
-//   return (
-//     <div style={{ width: 500, height: 500 }}>
-//       <video ref={videoRef} controls autoPlay width={'100%'} height={'auto'} />
-//     </div>
-//   );
-// };
-
-// export default LiveStreamPlayerFLV;

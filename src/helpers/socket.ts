@@ -1,7 +1,9 @@
 import { STORAGE } from '@/constant/keyStoage';
 import { SessionStore } from '@/helpers/local';
 
-const ws: any = new WebSocket(`${import.meta.env.VITE_APP_WS_IPCONFIG}`);
+const ws: any = new WebSocket(
+  `${import.meta.env.VITE_APP_WS_IPCONFIG}`
+);
 
 const sendMessageWS = (message: object) => {
   const customeMessage = {
